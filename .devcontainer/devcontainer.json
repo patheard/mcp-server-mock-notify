@@ -1,0 +1,33 @@
+{
+	"name": "mcp-server-mock-notify",
+	"image": "mcr.microsoft.com/devcontainers/base:bullseye@sha256:76a2d99e1e5aacfbf0e148656ed31110c70ffed074f6e141295d8b65b1b25702",
+	"containerEnv": {
+		"SHELL": "/bin/zsh"
+	},
+	"features": {
+		"ghcr.io/devcontainers/features/aws-cli:1": {
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers/features/python:1": {
+			"version": "3.13"
+		},
+		"ghcr.io/devcontainers/features/terraform:1": {
+			"version": "1.12.2"
+		},
+		"ghcr.io/va-h/devcontainers-features/uv:1": {
+			"version": "latest"
+		}
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"github.copilot",
+				"github.vscode-github-actions",
+				"hashicorp.hcl",
+				"hashicorp.terraform",
+				"ms-python.python",
+			]
+		}
+	},
+	"remoteUser": "vscode"
+}
