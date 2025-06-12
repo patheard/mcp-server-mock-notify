@@ -1,11 +1,13 @@
 from mcp.server.fastmcp import FastMCP
 import httpx
 import json
+import contextlib
 from typing import Optional, Dict, Any
 from pydantic import BaseModel
+from fastapi import FastAPI
 
 
-mcp = FastMCP("MockNotifyService MCP")
+mcp = FastMCP("MockNotifyService MCP", stateless_http=True)
 
 
 class NotifyResponse(BaseModel):
@@ -297,5 +299,11 @@ async def health_check(base_url: str = DEFAULT_BASE_URL) -> str:
         return json.dumps({"error": result.error or result.data, "status_code": result.status_code}, indent=2)
 
 
-if __name__ == "__main__":
-    mcp.run(transport='stdio')
+@contextlib.asynccontextmanager
+async def lifespan(app: FastAPI):
+    async with mcp.session_manager.run():
+        yield
+
+
+app = FastAPI(lifespan=lifespan)
+app.mount("/notify", mcp.streamable_http_app())
