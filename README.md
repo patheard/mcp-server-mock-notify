@@ -1,4 +1,4 @@
-# MCP Notify
+# MCP Server for GC Notify
 
 A Model Context Protocol (MCP) server for sending notifications through a mock GC Notify service.
 
