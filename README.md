@@ -16,7 +16,7 @@ This project uses [uv](https://github.com/astral-sh/uv) for Python package manag
    uv sync --directory server
    ```
 
-## Running the Server
+## Running locally
 
 Start the MCP notify server using uvicorn:
 
@@ -24,4 +24,24 @@ Start the MCP notify server using uvicorn:
 uv run --directory server uvicorn server:app
 ```
 
-The server will be available at `http://localhost:8000/notify/mcp/` by default.
+The server will be available at `http://localhost:8000/notify/mcp/`.
+
+
+## Running as an AWS Lambda function
+
+The Terraform creates a function with a function URL:
+
+```bash
+DOCKER_TAG="$AWS_ACCOUNT_ID.dkr.ecr.ca-central-1.amazonaws.com/mcp-server-mock-notify"
+
+# Build the Docker image
+docker build -t $DOCKER_TAG -f ./server/Dockerfile ./server
+
+# Create the function
+cd terraform
+terraform init
+terraform apply -target=aws_ecr_repository.mcp_server_mock_notify
+docker push $DOCKER_TAG
+terraform apply
+```
+
